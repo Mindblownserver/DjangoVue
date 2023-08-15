@@ -10,12 +10,36 @@
         </a>
       </div>
       <div class="navbar-menu" id="navbar-menu" v-bind:class="{'is-active':showMobileMenu}">
+        <div class="navbar-start">
+          <div class="navbar-item">
+            <form action="/search" method="get">
+              <div class="field has-addons">
+                <div class="control">
+                  <input type="text" name="query" placeholder="What are you looking for?" class="input">
+                </div>
+                <div class="control">
+                  <button class="button is-success">
+                      <span class="icon">
+                        <i class="fas fa-search"></i>
+                      </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
         <div class="navbar-end">
-          <router-link to="/summer" class="navbar-item">Sumemr</router-link>
+          <router-link to="/summer" class="navbar-item">Summer</router-link>
           <router-link to="/winter" class="navbar-item">Winter</router-link>
           <div class="navbar-item">
             <div class="buttons">
-              <router-link to="/login" class="button is-light">Log in</router-link>
+              <div v-if="$store.state.isAuthenticated">
+                <router-link to="/my-account" class="button is-danger">My account</router-link>
+              </div>
+
+              <div v-else>
+                <router-link to="/login" class="button is-light">Log in</router-link>
+              </div>
               <router-link to="/cart" class="button is-success">
                 <span class="icon">
                   <i class="fas fa-shopping-cart"></i>
@@ -40,6 +64,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default{
   data(){
     return{
@@ -51,6 +77,12 @@ export default{
   },
   beforeCreate(){
     this.$store.commit("initializeStore")
+    const token = this.$store.state.token
+    /* if(token){
+      axios.defaults.headers.common["Authentication"]= "Token "+ token
+    } else{
+      axios.defaults.headers.common["Authentication"] = ""
+    } */
   },
   computed:{ // calculated variables based on things around on the whole page
     cartLength(){

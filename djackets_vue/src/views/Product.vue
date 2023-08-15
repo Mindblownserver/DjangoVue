@@ -44,7 +44,7 @@ export default{
             const category_slug=this.$route.params.category_slug
             const product_slug=this.$route.params.product_slug
             console.log(category_slug, product_slug)
-            await axios.get(`/api/v1/products/${category_slug}/${product_slug}`).then(response=>{
+            await axios.get(`/api/v1/products/${category_slug}/${product_slug}`, { headers: {"Authorization" : `Token ${this.$store.state.token}`} }).then(response=>{
                 this.product=response.data
                 document.title=this.product.name+" | Djackets"
             }).catch(err=>{
